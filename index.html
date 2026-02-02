@@ -5,19 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>For Eunice Baby 💖</title>
 
-<!-- Background romantic music (starts after envelope click) -->
+<!-- Keep the same sound -->
 <audio id="bgMusic" loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
 
 <style>
-  :root{
-    --pink1:#ff9a9e;
-    --pink2:#fad0c4;
-    --hot:#ff4d6d;
-    --hot2:#ff6f91;
-  }
-
   body{
     margin:0;
     min-height:100vh;
@@ -25,195 +18,125 @@
     justify-content:center;
     align-items:center;
     font-family:"Trebuchet MS", Arial, sans-serif;
-    background: linear-gradient(135deg, var(--pink1), var(--pink2));
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     overflow:hidden;
     padding:14px;
   }
 
-  /* Soft “candlelight” dim after opening */
-  .dim{
-    position:fixed;
-    inset:0;
-    background: rgba(0,0,0,0.22);
-    opacity:0;
-    pointer-events:none;
-    transition: opacity 700ms ease;
+  /* Shared */
+  .screen{
+    width:100%;
+    max-width:440px;
   }
-  body.opened .dim{ opacity:1; }
 
-  /* Floating hearts layer */
-  .hearts{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    overflow:hidden;
-    opacity:0;
-    transition: opacity 700ms ease;
+  .card{
+    background:white;
+    padding:30px 26px;
+    border-radius:22px;
+    box-shadow:0 18px 42px rgba(0,0,0,.32);
+    text-align:center;
   }
-  body.opened .hearts{ opacity:1; }
 
-  .heart{
-    position:absolute;
-    bottom:-30px;
-    font-size:18px;
-    animation: floatUp linear forwards;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
-    opacity:.95;
+  h1{ color:#ff4d6d; margin:6px 0 10px; }
+  h2{ color:#e63950; margin:14px 0 8px; }
+
+  p{
+    font-size:16px;
+    line-height:1.65;
+    color:#333;
+    margin:10px 0;
   }
-  @keyframes floatUp{
-    from{
-      transform: translateY(0) translateX(0) scale(1);
-      opacity: 0;
-    }
-    10%{ opacity: .95; }
-    to{
-      transform: translateY(-115vh) translateX(var(--drift)) scale(var(--scale));
-      opacity: 0;
-    }
+
+  button{
+    padding:14px 26px;
+    margin:12px 10px 0;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    cursor:pointer;
+    transition: transform .25s ease;
   }
+
+  .yes{ background:#ff4d6d; color:white; }
+  .no{ background:#eee; }
+  .no:hover{ transform: translateX(90px); }
 
   /* Envelope */
   .envelope{
-    width: 330px;
-    height: 205px;
-    background: var(--hot);
-    position: relative;
-    border-radius: 14px;
-    cursor: pointer;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-    transform: translateZ(0);
+    width:330px;
+    height:205px;
+    background:#ff4d6d;
+    border-radius:14px;
+    position:relative;
+    cursor:pointer;
+    box-shadow:0 12px 28px rgba(0,0,0,.25);
   }
   .envelope::before{
     content:"";
     position:absolute;
     top:0; left:0;
-    border-left: 165px solid transparent;
-    border-right: 165px solid transparent;
-    border-top: 105px solid var(--hot2);
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
+    border-left:165px solid transparent;
+    border-right:165px solid transparent;
+    border-top:105px solid #ff6f91;
   }
   .label{
     position:absolute;
-    bottom:18px;
+    bottom:20px;
     width:100%;
     text-align:center;
     color:white;
+    font-weight:bold;
     font-size:18px;
-    font-weight:700;
-    letter-spacing:.2px;
   }
   .subLabel{
     position:absolute;
-    bottom:44px;
+    bottom:48px;
     width:100%;
     text-align:center;
     color: rgba(255,255,255,.92);
     font-size:13px;
   }
 
-  /* Card */
-  .card{
+  /* Fade transitions */
+  .fade{
+    opacity:1;
+    transform: translateY(0);
+    transition: opacity 550ms ease, transform 550ms ease;
+  }
+  .fade-out{
+    opacity:0;
+    transform: translateY(10px);
+  }
+
+  /* Hidden (kept in DOM for transitions) */
+  .hidden{
     display:none;
-    background:white;
-    padding: 30px 26px;
-    border-radius: 22px;
-    width: 100%;
-    max-width: 440px;
-    box-shadow: 0 18px 42px rgba(0,0,0,0.32);
-    text-align:center;
   }
 
-  h1{
-    color: var(--hot);
-    margin: 4px 0 10px;
+  /* Signature */
+  .signature{
+    margin-top:16px;
+    padding-top:12px;
+    border-top:1px solid rgba(0,0,0,.08);
+    font-style: italic;
+    color:#555;
   }
-  h2{ color:#e63950; margin: 16px 0 6px; }
-  p{
-    font-size:16px;
-    line-height:1.65;
-    margin: 10px 0;
-    color:#333;
-  }
-
-  .promises{
-    text-align:left;
-    margin: 14px auto 6px;
-    padding: 14px 16px;
-    border-radius: 16px;
-    background: rgba(255,77,109,0.08);
-  }
-  .promises h3{
-    margin:0 0 8px;
-    color:#b7223a;
-    font-size:15px;
-  }
-  .promises ul{
-    margin:0;
-    padding-left:18px;
-  }
-  .promises li{
-    margin: 6px 0;
-    color:#333;
-    font-size:15px;
-  }
-
-  button{
-    padding: 14px 26px;
-    margin: 12px 10px 0;
-    border:none;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor:pointer;
-    transition: transform .25s ease;
-  }
-  .yes{
-    background: var(--hot);
-    color:white;
-  }
-  .no{
-    background: #eee;
-  }
-  .no:hover{ transform: translateX(90px); }
-
-  .secondary{
-    background: #fff;
-    border: 2px solid var(--hot);
-    color: var(--hot);
-    margin-top: 14px;
-  }
-
-  #response{
-    margin-top: 16px;
-    font-weight:700;
-    color:#444;
-  }
-
-  .plan{
-    display:none;
-    margin-top: 12px;
-    padding: 14px 16px;
-    border-radius: 16px;
-    background: rgba(0,0,0,0.04);
-    text-align:left;
-  }
-  .plan strong{ color:#b7223a; }
-  .plan p{ margin: 6px 0; font-size:15px; }
 </style>
 </head>
 
 <body>
-  <div class="dim"></div>
-  <div class="hearts" id="heartsLayer"></div>
 
-  <!-- Envelope -->
-  <div class="envelope" id="envelope" onclick="openEnvelope()">
+<!-- ENVELOPE SCREEN -->
+<div id="envelopeScreen" class="screen fade">
+  <div class="envelope" onclick="openEnvelope()">
     <div class="subLabel">tap to open 💌</div>
     <div class="label">For Eunice Baby 💖💞</div>
   </div>
+</div>
 
-  <!-- Valentine Card -->
-  <div class="card" id="loveCard" aria-live="polite">
+<!-- QUESTION SCREEN -->
+<div id="questionScreen" class="screen fade hidden">
+  <div class="card">
     <h1>Eunice Baby 💖💞</h1>
 
     <p>
@@ -222,97 +145,78 @@
     </p>
 
     <p>
-      You calm my mind, warm my heart, and make me smile for no reason 😌❤️<br><br>
-      <strong>Idunnu mi</strong>… you really mean a lot to me 🥹
+      You calm my heart, brighten my days,<br>
+      and make everything feel better 😌❤️<br><br>
+      <strong>Idunnu mi</strong> 🥹
     </p>
-
-    <div class="promises">
-      <h3>Little things I’m choosing with you:</h3>
-      <ul>
-        <li>I’ll protect your peace 🤍</li>
-        <li>I’ll choose you — even on hard days 🫶</li>
-        <li>I’ll love you loudly and gently 💗</li>
-      </ul>
-    </div>
 
     <h2>Will you be my Valentine? 💘</h2>
 
-    <button class="yes" onclick="yesClick()">Yes, my love 😍</button>
+    <button class="yes" onclick="goToYes()">Yes, my love 😍</button>
     <button class="no">No 😏</button>
-
-    <div id="afterYes" style="display:none;">
-      <button class="secondary" onclick="togglePlan()">See our Valentine plan 👀</button>
-
-      <div class="plan" id="planBox">
-        <p><strong>Plan:</strong> I’m taking you out properly 🌹</p>
-        <p>🍽️ Good food</p>
-        <p>🎶 Soft music</p>
-        <p>🍫 Sweet treats</p>
-        <p>📸 Cute pictures (no argument 😌)</p>
-        <p style="margin-top:10px;"><strong>Note:</strong> I just want to love you and make you feel special.</p>
-      </div>
-    </div>
-
-    <p id="response"></p>
   </div>
+</div>
+
+<!-- YES SCREEN -->
+<div id="yesScreen" class="screen fade hidden">
+  <div class="card">
+    <h1>YAYYY 🥰💃💕</h1>
+
+    <p>
+      I’m so happy it’s you, Eunice Baby 💖<br>
+      You just made my heart very full 😌
+    </p>
+
+    <p>
+      🌹 Valentine Date Loading… 🌹<br><br>
+      🍽️ Good food<br>
+      🎶 Soft music<br>
+      🍫 Sweet treats<br>
+      📸 Cute pictures (no argument 😏)
+    </p>
+
+    <p>
+      I can’t wait to celebrate you and love you properly ❤️
+    </p>
+
+    <div class="signature">
+      With love, <strong>Ayomide</strong> 💘
+    </div>
+  </div>
+</div>
 
 <script>
+  function showScreen(hideId, showId){
+    const hideEl = document.getElementById(hideId);
+    const showEl = document.getElementById(showId);
+
+    // Fade out current
+    hideEl.classList.add("fade-out");
+
+    // After fade out, hide it and show next with fade in
+    setTimeout(() => {
+      hideEl.classList.add("hidden");
+      hideEl.classList.remove("fade-out");
+
+      showEl.classList.remove("hidden");
+      // ensure it starts visible (fade class already)
+      // small delay helps browsers apply transition cleanly
+      requestAnimationFrame(() => {
+        showEl.classList.remove("fade-out");
+      });
+    }, 560);
+  }
+
   function openEnvelope(){
-    // UI switch
-    document.getElementById("envelope").style.display = "none";
-    document.getElementById("loveCard").style.display = "block";
-    document.body.classList.add("opened");
-
-    // Start music (may require user interaction — this click counts)
+    // Start music (this click counts as interaction)
     const music = document.getElementById("bgMusic");
-    music.play().catch(()=>{ /* ignore autoplay blocks */ });
+    music.play().catch(()=>{});
 
-    // Start hearts
-    startHearts();
+    showScreen("envelopeScreen", "questionScreen");
   }
 
-  function yesClick(){
-    document.getElementById("afterYes").style.display = "block";
-    document.getElementById("response").innerHTML =
-      "YAYYY 🥰💃💕<br><br>" +
-      "I’m so happy it’s you, Eunice Baby 💖<br>" +
-      "Happy Valentine in advance 😌💘";
-  }
-
-  function togglePlan(){
-    const box = document.getElementById("planBox");
-    box.style.display = (box.style.display === "block") ? "none" : "block";
-  }
-
-  function startHearts(){
-    const layer = document.getElementById("heartsLayer");
-    const emojis = ["💖","💗","💞","💘","❤️","💕"];
-    let count = 0;
-
-    // make a few waves of hearts
-    const interval = setInterval(() => {
-      for(let i=0;i<4;i++){
-        const h = document.createElement("div");
-        h.className = "heart";
-        h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-
-        const left = Math.random()*100;
-        const dur = 6 + Math.random()*6;       // 6–12s
-        const drift = (Math.random()*120 - 60) + "px";
-        const scale = (0.8 + Math.random()*1.2).toFixed(2);
-
-        h.style.left = left + "vw";
-        h.style.animationDuration = dur + "s";
-        h.style.setProperty("--drift", drift);
-        h.style.setProperty("--scale", scale);
-
-        layer.appendChild(h);
-        setTimeout(()=>h.remove(), (dur+1)*1000);
-      }
-
-      count++;
-      if(count > 40) clearInterval(interval); // runs ~40 seconds then stops
-    }, 900);
+  function goToYes(){
+    showScreen("questionScreen", "yesScreen");
   }
 </script>
 
